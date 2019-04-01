@@ -9,9 +9,9 @@ function [x, k] = graddescent(x, epsilon)
 
    [X, Y] = meshgrid(xx, yy);
 
-    Z = X.^3 - 3*X + Y.^3 - 3*Y;
+    Z = X.^5 - 8*X + 2*Y.^3 - 3*Y - X*Y./6;
 
-    figure; contour(X, Y, Z); hold on;
+    figure('name', 'Grad'); contour(X, Y, Z); hold on;
    
    while norm(grad_fx(x)) >= epsilon 
       pk = -1 * grad_fx(x);
@@ -19,18 +19,24 @@ function [x, k] = graddescent(x, epsilon)
       x = x + alpha * pk;
       k = k + 1;
       plot(x(1), x(2), 'b*');
-      pause(0.5);
    end
 end
 
+#function f = fn(x)
+#  f = x(1)^3 + x(2)^3 - 3*x(1) - 3*x(2);
+#end
+
 function f = fn(x)
-  f = x(1)^3 + x(2)^3 - 3*x(1) - 3*x(2);
+  f = x(1)^5 - 8*x(1) + 2*x(2)^3 - 3*x(2) - x(1)*x(2)/6;
 end
 
+#function g = grad_fx(x)
+  #g = zeros(2, 1);
+  #g(1) = 3 * x(1) ^ 2 - 3;
+  #g(2) = 3 * x(2) ^ 2 - 3;
+#end
 function g = grad_fx(x)
-  g = zeros(2, 1);
-  g(1) = 3 * x(1) ^ 2 - 3;
-  g(2) = 3 * x(2) ^ 2 - 3;
+  g = [5*x(1)^4 - 8 - x(2)/6 ; 6*x(2)^2 - 3 - x(1)/6];
 end
 
 function alpha = backtrack(x, c1, pk, alpha0, ro)

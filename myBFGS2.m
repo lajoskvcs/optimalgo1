@@ -33,27 +33,35 @@ function [x,k,fval]=myBFGS2(x,e,maxit)
    
    
    
-   xx=linspace(-1.5,2);
-   yy=linspace(-3.5,4);
+   xx=linspace(-2,2);
+   yy=linspace(-2,2);
    [X,Y]=meshgrid(xx,yy);
-   Z=100*(Y-X.^2).^2+(1-X).^2;
-   figure; contour(X,Y,Z,linspace(min(min(Z)),max(max(Z)),50));
+   Z = X.^5 - 8*X + 2*Y.^3 - 3*Y - X*Y./6;
+   figure('name', 'BFGS'); contour(X,Y,Z,linspace(min(min(Z)),max(max(Z)),50));
    hold on;   
    plot(XS(1,1:k+1),XS(2,1:k+1),'*-')
    
  end  
    
   % the objective function 
-   function f=fv(x)
-     f=100*(x(2)-x(1)^2)^2+(1-x(1))^2;
+
+#  function f=fv(x)
+#     f = 100*(x(2)-x(1)^2)^2+(1-x(1))^2;
+#   end
+  function f=fv(x)
+     f = x(1)^5 - 8*x(1) + 2*x(2)^3 - 3*x(2) - x(1)*x(2)/6;
    end
  
  % the gradient of the objective function
-   function g=gr(x)
-     g=[-400*x(1)*(x(2)-x(1)^2)-(1-x(1))*2 ;
-        200*(x(2)-x(1)^2)];
-   end
-  
+#   function g=gr(x)
+#     g=[-400*x(1)*(x(2)-x(1)^2)-(1-x(1))*2 ;
+#        200*(x(2)-x(1)^2)];
+#   end
+  function g=gr(x)
+     g = [5*x(1)^4 - 8 - x(2)/6 ; 6*x(2)^2 - 3 - x(1)/6];
+   end 
+
+ 
   % the updating formula for H 
   function H=hessematrix(xn,x,H)
     s=xn-x;

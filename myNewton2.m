@@ -1,8 +1,8 @@
 function [x,k]=myNewton2(x,e,maxit)
   
   
-  g=@(x) [-400*x(1)*(x(2)-x(1)^2)-(1-x(1))*2 ; 200*(x(2)-x(1)^2)];
-  H=@(x) [1200*x(1)^2-400*x(2)+2, -400*x(1); -400*x(1), 200];
+  g=@(x) [5*x(1)^4 - 8 - x(2)/6 ; 6*x(2)^2 - 3 - x(1)/6];
+  H=@(x) [20*x(1)^3, 1/6 ; 1/6, 12*x(2)];
     
      
   if ~iscolumn(x)
@@ -11,10 +11,10 @@ function [x,k]=myNewton2(x,e,maxit)
   
   
   xx=linspace(-2,2);
-  yy=linspace(-3.5,4);
+  yy=linspace(-2,2);
   [X,Y]=meshgrid(xx,yy);1
-  Z=100*(Y-X.^2).^2+(1-X).^2;
-  figure; contour(X,Y,Z,linspace(min(min(Z)),max(max(Z)),50));
+  Z = X.^5 - 8*X + 2*Y.^3 - 3*Y - X*Y./6;
+  figure('name', 'Newton'); contour(X,Y,Z,linspace(min(min(Z)),max(max(Z)),50));
   hold on;      
   
   XS=zeros(length(x),maxit+1);
